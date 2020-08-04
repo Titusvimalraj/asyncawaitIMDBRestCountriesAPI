@@ -22,7 +22,16 @@ let parentElements = `    <main>
 
   </div>
   </div>
-  <div class="tab-pane fade" id="nav-imdb" role="tabpanel" aria-labelledby="nav-imdb-tab">...</div>
+  <div class="tab-pane fade" id="nav-imdb" role="tabpanel" aria-labelledby="nav-imdb-tab">
+  <h1>Rest Countries Bootstrap Card with async await</h1>
+  <div class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" id="search" type="search" placeholder="Search" aria-label="Search">
+      <input type="button" id="search-button" onclick="getImdbResults()" value="Search">
+    </div>
+  <div class="container-fluid" id="imdb-data">
+
+  </div>
+  </div>
 </div>
     </section>
 </main>`
@@ -133,3 +142,34 @@ async function getWeatherAwaitData(value, code) {
 }
 
 loadAsyncAwaitFunction();
+
+
+let getImdbResults = async() => {
+    let searchText = document.getElementById('search').value;
+    console.log(searchText);
+    let url = `http://www.omdbapi.com/?t=${searchText}&apikey=e9d1a1c3`
+    let response = await fetch(url);
+    let data = await response.json();
+    console.log(data);
+    let imdbMovieCard = `
+    <div class="col-12 col-md-6 imdb-card">
+    
+    <div class="card card-custom-css">
+    <div class="card-header">
+       ${data.Title}
+    </div>
+    <img src="${data.Poster || ''}" id="imdb-image" class="card-img-top cust-card-img" alt="no results image">
+    <div class="card-body card-body-custom-css">
+        <p class="card-text">
+            IMDB RATING: <span class="badge badge-success"> ${data.imdbRating} </span><br>
+            Language: <span class="badge "> ${data.Language}</span><br>
+            Genre: <span class="badge "> ${data.Genre}</span>
+        </p>
+    </div>
+</div>
+    </div>
+    
+    `;
+
+    document.getElementById('imdb-data').innerHTML = imdbMovieCard;
+}
