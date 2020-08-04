@@ -118,7 +118,7 @@ let loadAsyncAwaitFunction = async() => {
         let data = await response.json();
         getRestCountries(data, countryData, 'getWeatherAwaitData');
     } catch (error) {
-        console.log("Error:", err);
+        console.log("Error:", error);
     }
 }
 
@@ -136,7 +136,7 @@ async function getWeatherAwaitData(value, code) {
         alert('You selected Country: ' + data.name + ' and Temperature(in celsius) ' + data.main.temp);
     } catch (error) {
         alert("Couldn't find data for the selected country, Try again!");
-        console.log("Error:", err);
+        console.log("Error:", error);
     }
 
 }
@@ -145,31 +145,44 @@ loadAsyncAwaitFunction();
 
 
 let getImdbResults = async() => {
-    let searchText = document.getElementById('search').value;
-    console.log(searchText);
-    let url = `http://www.omdbapi.com/?t=${searchText}&apikey=e9d1a1c3`
-    let response = await fetch(url);
-    let data = await response.json();
-    console.log(data);
-    let imdbMovieCard = `
-    <div class="col-12 col-md-6 imdb-card">
-    
-    <div class="card card-custom-css">
-    <div class="card-header">
-       ${data.Title}
-    </div>
-    <img src="${data.Poster || ''}" id="imdb-image" class="card-img-top cust-card-img" alt="no results image">
-    <div class="card-body card-body-custom-css">
-        <p class="card-text">
-            IMDB RATING: <span class="badge badge-success"> ${data.imdbRating} </span><br>
-            Language: <span class="badge "> ${data.Language}</span><br>
-            Genre: <span class="badge "> ${data.Genre}</span>
-        </p>
-    </div>
-</div>
-    </div>
-    
-    `;
+    try {
+        let searchText = document.getElementById('search').value;
+        console.log(searchText);
+        let url = `http://www.omdbapi.com/?t=${searchText}&apikey=e9d1a1c3`
+        let response = await fetch(url);
+        let data = await response.json();
+        console.log(data);
+        if (data != null && data.Response != 'False') {
+            let imdbMovieCard = `
+            <div class="col-12 col-md-6 imdb-card">
+            
+            <div class="card card-custom-css">
+            <div class="card-header">
+               ${data.Title}
+            </div>
+            <img src="${data.Poster || ''}" id="imdb-image" class="card-img-top cust-card-img" alt="no results image">
+            <div class="card-body card-body-custom-css">
+                <p class="card-text">
+                    IMDB RATING: <span class="badge badge-success"> ${data.imdbRating} </span><br>
+                    Language: <span class="badge "> ${data.Language}</span><br>
+                    Genre: <span class="badge "> ${data.Genre}</span>
+                </p>
+            </div>
+        </div>
+            </div>
+            
+            `;
 
-    document.getElementById('imdb-data').innerHTML = imdbMovieCard;
+            document.getElementById('imdb-data').innerHTML = imdbMovieCard;
+        } else {
+
+            document.getElementById('imdb-data').innerHTML = '';
+            throw data.Error;
+        }
+
+    } catch (error) {
+        alert(`Error! No data found! ${error}`)
+        console.log("Error:", error);
+    }
+
 }
