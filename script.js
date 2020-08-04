@@ -148,7 +148,7 @@ let getImdbResults = async() => {
     try {
         let searchText = document.getElementById('search').value;
         console.log(searchText);
-        let url = `http://www.omdbapi.com/?t=${searchText}&apikey=e9d1a1c3`
+        let url = `https://cors-anywhere.herokuapp.com/http://www.omdbapi.com/?t=${searchText}&apikey=e9d1a1c3`
         let response = await fetch(url);
         let data = await response.json();
         console.log(data);
