@@ -1,0 +1,27 @@
+*{
+    /* border: 1px solid red; */
+}
+
+main, section{
+    min-height: 99vh;
+}
+
+section{
+    padding: 2% 10% 5% 10%;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.card-custom-css{
+    height: 100%;
+}
+
+
+.card-body-custom-css{
+    align-items: center;
+    display: flex;
+}
+
+.cust-card-img{
+    width: 100% !important;height: 40% !important;
+}
