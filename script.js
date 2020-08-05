@@ -23,7 +23,7 @@ let parentElements = `    <main>
   </div>
   </div>
   <div class="tab-pane fade" id="nav-imdb" role="tabpanel" aria-labelledby="nav-imdb-tab">
-  <h1>IMDB Search</h1>
+  <h1>IMDB Search movies Async </h1>
   <div class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" id="search" type="search" placeholder="Search" aria-label="Search">
       <input type="button" id="search-button" onclick="getImdbResults()" value="Search">
