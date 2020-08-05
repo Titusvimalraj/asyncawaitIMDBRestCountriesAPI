@@ -64,7 +64,7 @@ function getRestCountries(param, countryData, getWeatherData) {
                     </p>
                 </div>
                 <div class="card-footer text-muted text-center">
-                <button class="btn btn-sm btn-primary" data-toggle="alert" id="whoData" onclick="${getWeatherData}('${param[i].capital}','${param[i].alpha2Code}')">View Current Weather</button>
+                <button class="btn btn-sm btn-primary" data-toggle="alert" id="whoData" onclick="${getWeatherData}(${param[i].capital}','${param[i].alpha2Code}','${param[i].name}')">View Current Weather</button>
             </div>
             </div>
             `;
@@ -91,7 +91,7 @@ loadCountries = () => {
 loadCountries();
 
 
-function getWeatherFetchData(value, code) {
+function getWeatherFetchData(value, code, country) {
     var urlValues = '';
     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=";
     var weatherAPIKey = '&appid=c3b4ef31feb237ca322297881c170281';
@@ -101,7 +101,7 @@ function getWeatherFetchData(value, code) {
     fetch(urlValues)
         .then(res => res.json())
         .then((data) => {
-            alert('You selected Country: ' + data.name + ' and Temperature(in celsius) ' + data.main.temp);
+            alert('You selected Country: ' + country + ' with capital ' + data.name + ' and Temperature(in celsius) ' + data.main.temp);
         }).catch((err) => {
             alert("Couldn't find data for the selected country, Try again!");
             // console.log("Error:", err)
@@ -123,7 +123,7 @@ let loadAsyncAwaitFunction = async() => {
 }
 
 
-async function getWeatherAwaitData(value, code) {
+async function getWeatherAwaitData(value, code, country) {
     var urlValues = '';
     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=";
     var weatherAPIKey = '&appid=c3b4ef31feb237ca322297881c170281';
@@ -133,7 +133,7 @@ async function getWeatherAwaitData(value, code) {
     try {
         let response = await fetch(urlValues);
         let data = await response.json();
-        alert('You selected Country: ' + data.name + ' and Temperature(in celsius) ' + data.main.temp);
+        alert('You selected Country: ' + country + ' with capital ' + data.name + ' and Temperature(in celsius) ' + data.main.temp);
     } catch (error) {
         alert("Couldn't find data for the selected country, Try again!");
         console.log("Error:", error);
