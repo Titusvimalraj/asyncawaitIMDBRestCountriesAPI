@@ -64,7 +64,7 @@ function getRestCountries(param, countryData, getWeatherData) {
                     </p>
                 </div>
                 <div class="card-footer text-muted text-center">
-                <button class="btn btn-sm btn-primary" data-toggle="alert" id="whoData" onclick="${getWeatherData}('${param[i].name}','${param[i].alpha2Code}')">View Current Weather</button>
+                <button class="btn btn-sm btn-primary" data-toggle="alert" id="whoData" onclick="${getWeatherData}('${param[i].capital}','${param[i].alpha2Code}')">View Current Weather</button>
             </div>
             </div>
             `;
