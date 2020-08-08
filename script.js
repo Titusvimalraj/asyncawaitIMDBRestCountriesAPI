@@ -28,8 +28,8 @@ let parentElements = `    <main>
       <input class="form-control mr-sm-2" id="search" type="search" placeholder="Search" aria-label="Search">
       <input type="button" id="search-button" onclick="getImdbResults()" value="Search">
     </div>
-  <div class="container-fluid" id="imdb-data">
-
+  <div class="container-fluid">
+    <div class="row" id="imdb-data"></div>
   </div>
   </div>
 </div>
@@ -143,6 +143,18 @@ async function getWeatherAwaitData(value, code, country) {
 
 loadAsyncAwaitFunction();
 
+let singleMovieCard = async(imdbID) => {
+    try {
+        let urlSingle = `https://cors-anywhere.herokuapp.com/http://www.omdbapi.com/?i=${imdbID}&apikey=e9d1a1c3`
+        let response = await fetch(urlSingle);
+        let data = await response.json();
+        console.log(data);
+        return data;
+    } catch (error) {
+        throw error;
+    }
+
+}
 
 let getImdbResults = async() => {
     try {
@@ -152,26 +164,40 @@ let getImdbResults = async() => {
         let response = await fetch(url);
         let data = await response.json();
         console.log(data);
-        if (data != null && data.Response != 'False') {
-            let imdbMovieCard = `
-            <div class="col-12 col-md-6 imdb-card">
-            
-            <div class="card card-custom-css">
-            <div class="card-header">
-               ${data.Title}
+
+
+        if (data != null && data.Response != 'False' && data.Search != null) {
+            let movieData = [];
+            for (let i = 0; i < data.Search.length; i++) {
+                let movieDetail = await singleMovieCard(data.Search[i].imdbID);
+                movieData.push(movieDetail);
+            }
+
+            console.log(movieData);
+            let imdbMovieCard = "";
+            movieData.forEach(element => {
+                console.log('inside');
+                imdbMovieCard += `
+                <div class="col-12 col-md-3 imdb-card">
+                
+                <div class="card card-custom-css">
+                <div class="card-header">
+                   ${element.Title}
+                </div>
+                <img src="${element.Poster || ''}" id="imdb-image" class="card-img-top cust-card-img" alt="no results image">
+                <div class="card-body card-body-custom-css">
+                    <p class="card-text">
+                        IMDB RATING: <span class="badge badge-success"> ${element.imdbRating} </span><br>
+                        Language: <span class="badge "> ${element.Language}</span><br>
+                        Genre: <span class="badge "> ${element.Genre}</span>
+                    </p>
+                </div>
             </div>
-            <img src="${data.Poster || ''}" id="imdb-image" class="card-img-top cust-card-img" alt="no results image">
-            <div class="card-body card-body-custom-css">
-                <p class="card-text">
-                    IMDB RATING: <span class="badge badge-success"> ${data.imdbRating} </span><br>
-                    Language: <span class="badge "> ${data.Language}</span><br>
-                    Genre: <span class="badge "> ${data.Genre}</span>
-                </p>
-            </div>
-        </div>
-            </div>
-            
-            `;
+                </div>
+                
+                `;
+            });
+
 
             document.getElementById('imdb-data').innerHTML = imdbMovieCard;
         } else {
